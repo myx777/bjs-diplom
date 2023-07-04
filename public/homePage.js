@@ -35,6 +35,8 @@ setInterval(getExchangeRates, 60 * 1000);
 
 //Операции с деньгами
 const moneyOperation = new MoneyManager();
+
+//пополнение баланса
 moneyOperation.addMoneyCallback = (data) => {
     ApiConnector.addMoney(data, callback => {
         // debugger;
@@ -48,5 +50,71 @@ moneyOperation.addMoneyCallback = (data) => {
     });
     
 }
+
+//конвертирование валюты
+moneyOperation.conversionMoneyCallback = (data) => {
+    ApiConnector.convertMoney(data, callback => {
+        console.log( callback );
+        if(callback.success) {
+            ProfileWidget.showProfile(callback.data);
+            
+        }
+        // при успехе выводит undefined, пока не придумал как решить
+        moneyOperation.setMessage(callback.success, callback.error);
+    });
+}
+
+//перевод валюты
+moneyOperation.sendMoneyCallback = (money) => {
+    ApiConnector.transferMoney(money, callback => {
+        console.log( callback );
+        if(callback.success) {
+            ProfileWidget.showProfile(callback.data);
+            
+        }
+        // при успехе выводит undefined, пока не придумал как решить
+        moneyOperation.setMessage(callback.success, callback.error);
+    });
+}
+
+//Работа с избранным
+const userFavorites = new FavoritesWidget();
+
+//Запрос начального списка избранного
+ApiConnector.getFavorites(callback => {
+    console.log( callback );
+    if(callback.success) {
+        userFavorites.clearTable();
+        userFavorites.fillTable(callback.data);
+        moneyOperation.updateUsersList(callback.data);
+    }
+});
+
+//добавление пользователя в список избранных
+userFavorites.addUserCallback = (newUserFavorite) => {
+    ApiConnector.addUserToFavorites(newUserFavorite, callback => {
+        console.log( callback );
+        if(callback.success) {
+            userFavorites.clearTable();
+            userFavorites.fillTable(callback.data);
+            moneyOperation.updateUsersList(callback.data);
+        }
+        userFavorites.setMessage(callback.success, callback.error);
+    }); 
+}
+
+//удаление пользователя из избранного
+userFavorites.removeUserCallback = (userFavorit) => {
+    ApiConnector.removeUserFromFavorites(userFavorit, callback => {
+        console.log( callback );
+        if(callback.success) {
+            userFavorites.clearTable();
+            userFavorites.fillTable(callback.data);
+            moneyOperation.updateUsersList(callback.data);
+        }
+        userFavorites.setMessage(callback.success, callback.error);
+    });    
+}
+
 
 
