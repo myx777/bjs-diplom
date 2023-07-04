@@ -28,7 +28,7 @@ function getExchangeRates() {
             exchangeRates.fillTable(callback.data);
         }
     }); 
-};
+}
 
 getExchangeRates();
 setInterval(getExchangeRates, 60 * 1000);
@@ -37,13 +37,12 @@ setInterval(getExchangeRates, 60 * 1000);
 const moneyOperation = new MoneyManager();
 
 //пополнение баланса
-moneyOperation.addMoneyCallback = (data) => {
-    ApiConnector.addMoney(data, callback => {
+moneyOperation.addMoneyCallback = (moneyAdd) => {
+    ApiConnector.addMoney(moneyAdd, callback => {
         // debugger;
         console.log( callback );
         if(callback.success) {
-            ProfileWidget.showProfile(callback.data);
-            
+            ProfileWidget.showProfile(callback.data);            
         }
         // при успехе выводит undefined, пока не придумал как решить
         moneyOperation.setMessage(callback.success, callback.error);
@@ -52,12 +51,11 @@ moneyOperation.addMoneyCallback = (data) => {
 }
 
 //конвертирование валюты
-moneyOperation.conversionMoneyCallback = (data) => {
-    ApiConnector.convertMoney(data, callback => {
+moneyOperation.conversionMoneyCallback = (moneyConversion) => {
+    ApiConnector.convertMoney(moneyConversion, callback => {
         console.log( callback );
         if(callback.success) {
-            ProfileWidget.showProfile(callback.data);
-            
+            ProfileWidget.showProfile(callback.data);           
         }
         // при успехе выводит undefined, пока не придумал как решить
         moneyOperation.setMessage(callback.success, callback.error);
@@ -65,12 +63,11 @@ moneyOperation.conversionMoneyCallback = (data) => {
 }
 
 //перевод валюты
-moneyOperation.sendMoneyCallback = (money) => {
-    ApiConnector.transferMoney(money, callback => {
+moneyOperation.sendMoneyCallback = (moneySend) => {
+    ApiConnector.transferMoney(moneySend, callback => {
         console.log( callback );
         if(callback.success) {
-            ProfileWidget.showProfile(callback.data);
-            
+            ProfileWidget.showProfile(callback.data);            
         }
         // при успехе выводит undefined, пока не придумал как решить
         moneyOperation.setMessage(callback.success, callback.error);
@@ -115,6 +112,3 @@ userFavorites.removeUserCallback = (userFavorit) => {
         userFavorites.setMessage(callback.success, callback.error);
     });    
 }
-
-
-
