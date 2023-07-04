@@ -5,13 +5,13 @@ const user = new UserForm();
 user.loginFormCallback = (data) => {
     // debugger;    
     console.log(data);
-    ApiConnector.login(data, response => {
-        console.log(response);
-        if(response.success === true) {
+    ApiConnector.login(data, callback => {
+        console.log( callback );
+        if(callback.success === true) {
             location.reload();
         } 
 
-        user.setLoginErrorMessage(response.error);
+        user.setLoginErrorMessage(callback.error);
         
     });
     
@@ -19,13 +19,13 @@ user.loginFormCallback = (data) => {
 
 user.registerFormCallback = (data) => {
     console.log(data);
-    ApiConnector.register(data, response => {
-        console.log(response);
-        if(response.success) {
+    ApiConnector.register(data, callback => {
+        console.log( callback );
+        if(callback.success) {
             location.reload();
         }
         
-        user.setRegisterErrorMessage(message);
+        user.setRegisterErrorMessage(callback.error);
     })
 }
 
