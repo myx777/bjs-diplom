@@ -40,7 +40,9 @@ router.post('/add', (request, response) => {
   user.balance[currency] = countMoney;
 
   userDb.assign({ ...user }).write();
-  response.json({ success: true, data: userDb.value() });
+  response.json({ success: true, data: userDb.value(), error: `Вы богаче на 
+    ${amount} ${currency}! Есть повод отметить!` 
+  });
 });
 
 router.post('/transfer', (request, response) => {
@@ -88,7 +90,9 @@ router.post('/transfer', (request, response) => {
   sourceUserDb.assign({ ...sourceUser }).write();
   targetUserDb.assign({ ...targetUser }).write();
 
-  response.json({ success: true, data: sourceUserDb.value() });
+  response.json({ success: true, data: sourceUserDb.value(), error: `Вы расстались с 
+    ${amount} ${currency}! Как же они там, родненькие, в чужой компании??`
+  });
 });
 
 router.post('/convert', (request, response) => {
@@ -149,7 +153,10 @@ router.post('/convert', (request, response) => {
     user.balance[targetCurrency] += countConvertedMoney;
 
     userDb.assign({ ...user }).write();
-    response.json({ success: true, data: userDb.value() });
+    response.json({ success: true, data: userDb.value(), 
+      error: `Волшебное превращение ${fromAmount} ${fromCurrency} в ${countConvertedMoney.toFixed(2)} ${targetCurrency} свершилось! 
+      Возликуйте, но помните о комиссиях!`
+   });
   });
 });
 

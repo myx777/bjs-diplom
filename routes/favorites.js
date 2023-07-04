@@ -51,7 +51,9 @@ router.post('/add', (request, response) => {
 
   favorites[id] = name;
   db.set(`favorites.${user.id}`, favorites).write();
-  response.json({ success: true, data: db.get('favorites').value()[user.id] });
+  response.json({ success: true, data: db.get('favorites').value()[user.id], 
+    error: `Поздравляю, в адресную книгу зачем-то добавлен ${name.toUpperCase() }! Береги крипту =)`
+  });
 });
 
 router.post('/remove', (request, response) => {
@@ -69,10 +71,13 @@ router.post('/remove', (request, response) => {
     return;
   }
 
+  const removedValue = favorites[id];
   delete favorites[id];
-
+ 
   db.set(`favorites.${user.id}`, favorites).write();
-  response.json({ success: true, data: db.get('favorites').value()[user.id] || {} });
+  response.json({ success: true, data: db.get('favorites').value()[user.id] || {},  
+    error: `Вы изгнали ${removedValue.toUpperCase() } из адресной книги!` 
+  });
 });
 
 module.exports = router;

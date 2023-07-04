@@ -44,7 +44,6 @@ moneyOperation.addMoneyCallback = (moneyAdd) => {
         if(callback.success) {
             ProfileWidget.showProfile(callback.data);            
         }
-        // при успехе выводит undefined, пока не придумал как решить
         moneyOperation.setMessage(callback.success, callback.error);
     });
     
@@ -57,7 +56,6 @@ moneyOperation.conversionMoneyCallback = (moneyConversion) => {
         if(callback.success) {
             ProfileWidget.showProfile(callback.data);           
         }
-        // при успехе выводит undefined, пока не придумал как решить
         moneyOperation.setMessage(callback.success, callback.error);
     });
 }
@@ -69,7 +67,6 @@ moneyOperation.sendMoneyCallback = (moneySend) => {
         if(callback.success) {
             ProfileWidget.showProfile(callback.data);            
         }
-        // при успехе выводит undefined, пока не придумал как решить
         moneyOperation.setMessage(callback.success, callback.error);
     });
 }
@@ -89,6 +86,7 @@ ApiConnector.getFavorites(callback => {
 
 //добавление пользователя в список избранных
 userFavorites.addUserCallback = (newUserFavorite) => {
+    debugger;
     ApiConnector.addUserToFavorites(newUserFavorite, callback => {
         console.log( callback );
         if(callback.success) {
